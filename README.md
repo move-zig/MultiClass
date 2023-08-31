@@ -12,4 +12,4 @@ Instead of trying to inject the individual classes, we inject a factory class th
 
 ## Notes
 
-Because the individual classes might have
+Because the classes created by the factory class also require dependency injection, we make sure that we inject any needed classes into the factory so it can pass them on when it creates a class.
