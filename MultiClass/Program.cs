@@ -49,15 +49,14 @@ public class Program
     {
         builder.ConfigureServices((HostBuilderContext context, IServiceCollection services) =>
         {
-            // We don't register 
             services.AddOptions<CCFClientOptions>()
                .Bind(context.Configuration.GetSection(CCFClientOptions.ConfigurationSectionName))
                .ValidateDataAnnotations();
             services.AddOptions<FourRefuelClientOptions>()
                .Bind(context.Configuration.GetSection(FourRefuelClientOptions.ConfigurationSectionName))
                .ValidateDataAnnotations();
-            services.AddSingleton<IClientFactory, ClientFactory>();
-            services.AddSingleton<Program>();
+            services.AddTransient<IClientFactory, ClientFactory>();
+            services.AddTransient<Program>();
         });
     }
 
@@ -70,6 +69,10 @@ public class Program
     public Program(IClientFactory clientFactory)
     {
         this.clientFactory = clientFactory;
+
+        // or you could create the clients here once to be reused as many times as needed
+        // this.ccfClient = clientFactory.GetClient(ClientType.CCF);
+        // this.fourRefuelClient = clientFactory.GetClient(ClientType.FourRefuel);
     }
 
     /// <summary>
